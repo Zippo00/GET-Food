@@ -1,7 +1,7 @@
 # PWP SPRING 2025
 # PROJECT NAME
 # Group information
-* Student 1. Name and email
+* Mikko Lempinen, mikko.lempinen@oulu.fi
 * Student 2. Name and email
 * Student 3. Name and email
 * Student 4. Name and email
