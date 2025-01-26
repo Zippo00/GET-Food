@@ -2,7 +2,7 @@
 # PROJECT NAME
 # Group information
 * Mikko Lempinen, mikko.lempinen@oulu.fi
-* Student 2. Name and email
+* Mohamed Al-Ajily, malajily24@student.oulu.fi
 * Student 3. Name and email
 * Student 4. Name and email
 
