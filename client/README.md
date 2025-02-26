@@ -68,3 +68,12 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+ 
+
+# Database
+This app uses SQLAlchemy in Compbination with pysqlite3 as a database so it should generally be compatible with aby sqlite database.
+
+## Populating/Updating the Database
+You can populate the Database with the provided script, the data for the population should be ...
+Run the script for populating or updating using the following command:
+
