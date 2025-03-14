@@ -1,79 +1,84 @@
-# Getting Started with Create React App
+# PWP SPRING 2025
+# PROJECT NAME
+# Group information
+* Mikko Lempinen, mikko.lempinen@oulu.fi
+* Mohamed Al-Ajily, malajily24@student.oulu.fi
+* Lukas Hoffmann, lhoffman24@student.oulu.fi
+* Student 4. Name and email
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+__Remember to include all required documentation and HOWTOs, including how to create and populate the database, how to run and test the API, the url to the entrypoint, instructions on how to setup and run the client, instructions on how to setup and run the axiliary service and instructions on how to deploy the api in a production environment__
 
-In the project directory, you can run:
 
-### `npm start`
+🚀 Setup Guide
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+🔹 Running the Flask Backend (Server)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1️⃣ Navigate to the Server Folder
 
-### `npm test`
+Open a terminal or command prompt and move into the backend (server) folder:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+cd server
 
-### `npm run build`
+2️⃣ Create and Activate a Virtual Environment
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Python virtual environments help keep dependencies isolated.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+🔹 On macOS & Linux
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+python3 -m venv venv
+source venv/bin/activate
 
-### `npm run eject`
+🔹 On Windows (Command Prompt)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+python -m venv venv
+venv\Scripts\activate
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3️⃣ Install Dependencies
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Once the virtual environment is activated, install the required Python libraries:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+pip install -r requirements.txt
 
-## Learn More
+4️⃣ Run the Flask Server
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Start the Flask backend:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+python app.py
 
-### Code Splitting
+By default, Flask runs at: http://127.0.0.1:5000/
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+⚛️ Running the React Frontend (Client)
 
-### Analyzing the Bundle Size
+1️⃣ Navigate to the Frontend Folder
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Open a new terminal or command prompt and move into the React (client) folder:
 
-### Making a Progressive Web App
+cd client
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+2️⃣ Install Dependencies
 
-### Advanced Configuration
+Before running React, install the necessary Node.js packages:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+npm install
 
-### Deployment
+3️⃣ Start the React Development Server
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+To launch the frontend, run:
 
-### `npm run build` fails to minify
+npm start
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
- 
-
+This will start a development server at: http://localhost:3000/ (the browser should open automatically).
 # Database
-This app uses SQLAlchemy in Compbination with pysqlite3 as a database so it should generally be compatible with aby sqlite database.
+This app uses SQLAlchemy in Compbination with pysqlite3 as a database so it should generally be compatible with any sqlite database.
 
-## Populating/Updating the Database
-You can populate the Database with the provided script, the data for the population should be ...
-Run the script for populating or updating using the following command:
+## Populating the Database
+You can populate the Database with the provided script, the data for the population should be in an csv-file, with each row beeing an individual food item, it's properties being seperated by a comma and a semicolon indicating the corresponding pictures. You seperate the food items using a line break to indicate the next food item. 
 
+For example a data.csv file containing the following:
+
+Hamburger,10.99,A classic hamburger;hamburgerpicutre1,/path/to/hamburger1.jpg,hamburgerpicture2,/path/to/hamburger2.jpg
+Cheesburger,12.99,A classic hamburger but with cheese,cheeseburgerpicture1,/path/to/cheeseburger1.jpg,cheeseburgerpicture2,path/to/cheeseburger2.jpg
+
+
+You can run the script for populating the database using the following command (when in the project folder): python ./server/api/populate_db.py pat/to/data.csv
