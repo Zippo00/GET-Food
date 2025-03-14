@@ -3,7 +3,7 @@
 # Group information
 * Mikko Lempinen, mikko.lempinen@oulu.fi
 * Mohamed Al-Ajily, malajily24@student.oulu.fi
-* Student 3. Name and email
+* Abu Roman, aroman24@student.oulu.fi
 * Student 4. Name and email
 
 
