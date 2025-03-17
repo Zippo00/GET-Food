@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from flasgger import swag_from
 from api.models.image import Image
 from api.models.item import Item
 from api.db import db
@@ -6,14 +7,54 @@ import base64
 
 image_bp = Blueprint("image", __name__, url_prefix="/images")
 
-#Get All Images
+# Get All Images
 @image_bp.route("/", methods=["GET"])
+@swag_from({
+    "responses": {
+        200: {
+            "description": "Retrieve all images",
+            "examples": {
+                "application/json": [
+                    {"id": "uuid", "name": "Pizza Image", "item_id": "uuid"},
+                    {"id": "uuid", "name": "Burger Image", "item_id": "uuid"}
+                ]
+            }
+        }
+    }
+})
 def get_images():
     images = Image.query.all()
     return jsonify([image.deserialize() for image in images]), 200
 
-#Get Single Image by ID (UUID)
+# Get Single Image by ID (UUID)
 @image_bp.route("/<string:image_id>", methods=["GET"])
+@swag_from({
+    "parameters": [
+        {
+            "name": "image_id",
+            "in": "path",
+            "type": "string",
+            "required": True,
+            "description": "Image UUID"
+        }
+    ],
+    "responses": {
+        200: {
+            "description": "Image details",
+            "examples": {
+                "application/json": {
+                    "id": "uuid",
+                    "name": "Pizza Image",
+                    "item_id": "uuid",
+                    "data": "Base64 encoded data"
+                }
+            }
+        },
+        404: {
+            "description": "Image not found"
+        }
+    }
+})
 def get_image(image_id):
     image = Image.query.get(image_id)
     if not image:
@@ -21,8 +62,36 @@ def get_image(image_id):
 
     return jsonify(image.deserialize()), 200
 
-#Upload Image (Base64 Encoded, UUID Item ID)
+# Upload Image (Base64 Encoded, UUID Item ID)
 @image_bp.route("/", methods=["POST"])
+@swag_from({
+    "parameters": [
+        {
+            "name": "body",
+            "in": "body",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "item_id": {"type": "string"},
+                    "data": {"type": "string", "description": "Base64 encoded image"}
+                },
+                "required": ["name", "item_id", "data"]
+            }
+        }
+    ],
+    "responses": {
+        201: {
+            "description": "Image uploaded successfully"
+        },
+        400: {
+            "description": "Missing required fields or Invalid Base64 image data"
+        },
+        404: {
+            "description": "Item does not exist"
+        }
+    }
+})
 def upload_image():
     data = request.get_json()
     if "name" not in data or "item_id" not in data or "data" not in data:
@@ -33,7 +102,7 @@ def upload_image():
         return jsonify({"error": "Item does not exist"}), 404
 
     try:
-        image_data = base64.b64decode(data["data"])  # Decoding to Base64....
+        image_data = base64.b64decode(data["data"])  # Decoding Base64
     except Exception:
         return jsonify({"error": "Invalid Base64 image data"}), 400
 
@@ -47,8 +116,27 @@ def upload_image():
     
     return jsonify(new_image.deserialize()), 201
 
-#Delete Image by (UUID)
+# Delete Image by (UUID)
 @image_bp.route("/<string:image_id>", methods=["DELETE"])
+@swag_from({
+    "parameters": [
+        {
+            "name": "image_id",
+            "in": "path",
+            "type": "string",
+            "required": True,
+            "description": "Image UUID"
+        }
+    ],
+    "responses": {
+        200: {
+            "description": "Image deleted successfully"
+        },
+        404: {
+            "description": "Image not found"
+        }
+    }
+})
 def delete_image(image_id):
     image = Image.query.get(image_id)
     if not image:

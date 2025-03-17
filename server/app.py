@@ -1,4 +1,5 @@
 from flask import Flask
+from flasgger import Swagger
 from config import Config
 from api.db import db
 from api.routes.item_routes import item_bp
@@ -10,14 +11,24 @@ def create_app():
     
     db.init_app(app)
 
+    #blueprints
     app.register_blueprint(item_bp)
     app.register_blueprint(image_bp)
+
+    #Swagger initialization
+    swagger = Swagger(app)
 
     with app.app_context():
         db.create_all()
 
-    @app.route("/") 
+    @app.route("/")
     def home():
+        """Welcome message
+        ---
+        responses:
+          200:
+            description: Welcome message
+        """
         return {"message": "Welcome to the Food Ordering System API!"}, 200
 
     return app
