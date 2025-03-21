@@ -13,7 +13,6 @@ __pycache__/
 instance/
 *.log
 .env
-config.py
 
 # Database files
 *.sqlite3
@@ -61,3 +60,6 @@ frontend/public/uploads/
 # Misc
 .pnp/
 .pnp.js
+
+# ignore venv folder..
+server/venv/
