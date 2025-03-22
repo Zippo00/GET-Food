@@ -4,6 +4,9 @@ from config import Config
 from api.db import db
 from api.routes.item_routes import item_bp
 from api.routes.image_routes import image_bp
+from api.routes.orders_routes import orders_bp
+from api.routes.order_items_routes import order_items_bp
+from api.routes.order_status_routes import order_status_bp
 
 def create_app():
     app = Flask(__name__)
@@ -14,6 +17,10 @@ def create_app():
     #blueprints
     app.register_blueprint(item_bp)
     app.register_blueprint(image_bp)
+    app.register_blueprint(orders_bp)
+    app.register_blueprint(order_items_bp)
+    app.register_blueprint(order_status_bp)
+
 
     #Swagger initialization
     swagger = Swagger(app)
