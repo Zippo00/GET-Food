@@ -95,15 +95,15 @@ This app uses `SQLAlchemy` in combination with `pysqlite3` as a database so it s
 
 You can populate the Database with the provided script. The data for the population should be in an csv-file, with each row beeing an individual food item, its properties being seperated by a comma and a semicolon indicating the corresponding pictures. You seperate the food items using a line break to indicate the next food item. 
 
-For example a `data.csv` file containing the following:
-
-*Hamburger,10.99,A classic hamburger;hamburgerpicutre1,/path/to/hamburger1.jpg,hamburgerpicture2,/path/to/hamburger2.jpg
-Cheesburger,12.99,A classic hamburger but with cheese,cheeseburgerpicture1,/path/to/cheeseburger1.jpg,cheeseburgerpicture2,path/to/cheeseburger2.jpg*
-
-
-You can run the script for populating the database using the following command *(when in the project folder)*: 
+An example-file, `example_data.csv` with some images can be found in the `example_data` folder, you can populate the database with the example data by running the following *(when in the project folder)*:
 
 ```console
-python ./server/api/populate_db.py pat/to/data.csv
+python ./server/api/populate_db.py ./example_data/example_data.csv
+```
+
+You can then accordingly run the script for populating the database using the following command *(when in the project folder)*: 
+
+```console
+python ./server/api/populate_db.py path/to/data.csv
 ```
 
