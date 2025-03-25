@@ -8,7 +8,14 @@ from api.routes.orders_routes import orders_bp
 from api.routes.order_items_routes import order_items_bp
 from api.routes.order_status_routes import order_status_bp
 
-def create_app():
+
+def init_app():
+    """
+    Initializes the Flask app.
+
+    Returns:
+        app (Flask): Flask app.
+    """
     app = Flask(__name__)
     app.config.from_object(Config)
     
@@ -20,13 +27,24 @@ def create_app():
     app.register_blueprint(orders_bp)
     app.register_blueprint(order_items_bp)
     app.register_blueprint(order_status_bp)
+    return app
 
+def create_db(app):
+    """
+    Creates the initial database.
+    """
+    with app.app_context():
+        db.create_all()
+
+
+def create_app():
+    # Initialize app
+    app = init_app()
 
     #Swagger initialization
     swagger = Swagger(app)
 
-    with app.app_context():
-        db.create_all()
+    create_db(app)
 
     @app.route("/")
     def home():
