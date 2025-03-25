@@ -137,13 +137,14 @@ def test_post_items_missing_field(client):
     """
     Test posting an item with a missing field.
     """
-    # Post an item
+    # Post an item with a missing field
     response = client.post('/items/', json={"description": "test", "name": "test"})
 
     assert response.status_code == 400
 
 def test_post_duplicate_item(client):
-    """est posting a duplicate item
+    """
+    Test posting a duplicate item
     """
     # Post an item
     client.post('/items/', json={"description": "test", "name": "test", "price": 1})
@@ -164,46 +165,83 @@ def test_delete_item_invalid_uuid(client):
     Test deleting an item with invalid uuid
     """
     pass
+    #response = client.delete('/items/192837')
+
+    #assert response.status_code == 404 TODO: What error code should this return?
+
 
 def test_delete_item_not_found(client):
     """
+    Test deleting a non-existent image.
     """
-    pass
+    response = client.delete('/items/192837')
+
+    assert response.status_code == 404
 
 def test_get_specific_item(client):
     """
+    Test retrieving a specific item.
     """
-    pass
+    # Post an item
+    #client.post('/items/', json={"description": "test", "name": "test", "price": 1})
+    # Retrieve posted item
+    # TODO: How to ? What is the assigned UUID here?
+
 
 def test_get_specific_item_invalid_uuid(client):
     """
+    Test retrieving an item with an invalid UUID.
     """
-    pass
+    response = client.get('/items/mikäonvalidiuuidformaatti?')
+
+    assert response.status_code == 400
 
 def test_get_specific_item_not_found(client):
     """
+    Test retrieving a non-existing item.
     """
-    pass
+    response = client.get('/items/20')
+
+    assert response.status_code == 404
 
 def test_put_specific_item(client):
     """
+    Test updating specific item data.
     """
+    # Post an item
+    # Update its data with PUT
+    #TODO: How are the UUIDs assigned?
     pass
 
 def test_put_specific_item_invalid_uuid(client):
     """
+    Test updating the data of a specific item with an invalid UUID.
     """
-    pass
+    response = client.put('/items/mikäonvalidiuuidformaatti?',
+                          json={
+                              "description": "test",
+                              "name": "test",
+                              "price": 5})
+
+    assert response.status_code == 400
 
 def test_put_specific_item_not_found(client):
     """
+    Test updating the data of a specific non-existent item. 
     """
-    pass
+    response = client.put('/items/20',
+                          json={
+                              "description": "test",
+                              "name": "test",
+                              "price": 5})
+
+    assert response.status_code == 404
 
 # ORDER ITEMS FUNCTIONALITITES
 
 def test_order_item_post(client):
     """
+    Test adding item to an order.
     """
     pass
 
