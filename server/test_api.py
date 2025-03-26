@@ -221,7 +221,8 @@ def test_put_specific_item_invalid_uuid(client):
                           json={
                               "description": "test",
                               "name": "test",
-                              "price": 5})
+                              "price": 5
+                              })
 
     assert response.status_code == 400
 
@@ -233,7 +234,8 @@ def test_put_specific_item_not_found(client):
                           json={
                               "description": "test",
                               "name": "test",
-                              "price": 5})
+                              "price": 5
+                              })
 
     assert response.status_code == 404
 
@@ -243,39 +245,74 @@ def test_order_item_post(client):
     """
     Test adding item to an order.
     """
-    pass
+    response = client.post('/order-items/', json={"item_id": "test", "order_id": "test", "quantity": 1})
+
+    assert response.status_code == 201
+    # assert response.json["item_id"] == "test" TODO: check if works
 
 def test_order_item_post_error(client):
     """
+    Test adding item to an order with invalid request.
     """
-    pass
+    response = client.post('/order-items/', json={"test": "test"})
+
+    assert response.status_code == 500 # TODO What status_code should be returned here?
 
 def test_order_item_get(client):
     """
+    Test retrieving an order.
     """
-    pass
+    # Add an item to an order
+    response1 = client.post('/order-items/', json={"item_id": "test", "order_id": "test", "quantity": 1})
+    # Attempt to retrieve the order
+    response2 = client.get(f'/order-items/{response1.json["id"]}')
+
+    assert response2.status_code == 200
+    # Make sure the order ids match
+    assert response2.json["id"] == response1.json["id"]
 
 def test_order_item_get_error(client):
     """
+    Test retrieving a non-existent order.
     """
-    pass
+    # Attempt to retrieve non-existent order
+    response = client.get('/order-items/888')
+
+    assert response.status_code == 500 #TODO What code is returned here?
 
 # ORDER STATUS FUNCTIONALITIES
 
 def test_order_status_post(client):
     """
+    Test updating the status of an order.
     """
-    pass
+    response = client.post('/order-status/', json={"order_id": "test", "status": "test"})
+
+    assert response.status_code == 201
+    assert response.json["order_id"] == "test" #Correct syntax here?
 
 def test_order_status_post_error(client):
     """
+    Test updating the status of an order with an invalid request.
     """
-    pass
+    response = client.post('/order-status/', json={"test": "test"})
+
+    assert response.status_code == 500
 
 def test_order_status_get(client):
     """
+    Test retrieving status history for a specific order.
     """
-    pass
+    # Update an order status
+    client.post('/order-status/', json={"order_id": "123", "status": "test"})
+
+    # Attempt to retrieve statys history
+    response = client.get('/order-status/123')
+
+    assert response.status_code == 200
+    assert isinstance(response.json, list) #correct syntax?
+
+
 
 def test_order_status_get_error(client):
     """
@@ -286,8 +323,16 @@ def test_order_status_get_error(client):
 
 def test_orders_get(client):
     """
+    Test retrieving all orders
     """
-    pass
+    # Create an order
+    client.post('/orders/', json={"customer_name": "test"})
+    # Retrieve orders
+    response = client.get('/orders/')
+
+    assert response.status_code == 200
+    assert response.json[0]["customer_name"] == "test" #correct syntax?
+
 
 def test_orders_get_error(client):
     """
@@ -296,8 +341,12 @@ def test_orders_get_error(client):
 
 def test_orders_post(client):
     """
+    Test creating a new order.
     """
-    pass
+    response = client.post('/orders/', json={"customer_name": "test"})
+
+    assert response.status_code == 201
+    assert response.json["customer_name"] == "test"
 
 def test_orders_post_error(client):
     """
