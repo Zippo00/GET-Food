@@ -31,11 +31,18 @@ order_status_bp = Blueprint('order_status', __name__, url_prefix='/order-status'
                     'updated_at': {'type': 'string', 'format': 'date-time'}
                 }
             }
+        },
+        400: {
+            'description': 'Missing required fields'
         }
     }
 })
 def update_status():
     data = request.get_json()
+
+    if not data or 'order_id' not in data or 'status' not in data:
+        return jsonify({"error": "Missing required fields"}), 400
+
     status = OrderStatus(
         id=str(uuid.uuid4()),
         order_id=data['order_id'],
@@ -44,7 +51,6 @@ def update_status():
     db.session.add(status)
     db.session.commit()
     return jsonify(status.deserialize()), 201
-
 
 @order_status_bp.route('/<order_id>', methods=['GET'])
 @swag_from({
