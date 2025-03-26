@@ -1,0 +1,65 @@
+# General OS files
+.DS_Store
+Thumbs.db
+
+# Python Virtual Environment
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Flask specific
+instance/
+*.log
+.env
+
+# Database files
+*.sqlite3
+*.db
+
+# Node.js / React
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Build files
+build/
+dist/
+coverage/
+
+# Logs & Debugging
+*.log
+*.out
+*.pid
+*.seed
+*.orig
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker & Deployment
+docker-compose.override.yml
+.env.production
+.env.development
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore public uploads
+backend/uploads/
+frontend/public/uploads/
+
+# Misc
+.pnp/
+.pnp.js
+
+# ignore venv folder..
+server/venv/
