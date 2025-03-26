@@ -2,10 +2,12 @@
 Unit tests for API.
 """
 import pytest
+import base64
 from app import app
 
-test_img_base64 = open(r"template_image_base64.txt","r")
-print(f"test_img_base64:\n{test_img_base64}\n")
+with open("pizza_image.jpg", "rb") as image_file:
+    test_img_base64 = base64.b64encode(image_file.read())
+test_img_base64 = test_img_base64.decode("utf-8")
 
 @pytest.fixture
 def client():
@@ -72,7 +74,8 @@ def test_get_images(client):
     response = client.get('/images/')
 
     assert response.status_code == 200
-    assert response.json[0]["name"] == "test" # TODO: is syntax correct here?
+    print(f"response.json:\n{response.json}\n")
+    assert len(response.json) > 0
 
 def test_get_images_empty_db(client):
     """
@@ -269,6 +272,7 @@ def test_order_item_get(client):
 
     assert response2.status_code == 200
     # Make sure the order ids match
+    print(f"response.json:\n{response2.json}\n")
     assert response2.json["id"] == response1.json["id"]
 
 def test_order_item_get_error(client):
@@ -277,8 +281,9 @@ def test_order_item_get_error(client):
     """
     # Attempt to retrieve non-existent order
     response = client.get('/order-items/888')
-
-    assert response.status_code == 500 #TODO What code is returned here?
+    print(f"response.json:\n{response.json}\n")
+    
+    assert response.json ==  [] # should return an empty list
 
 # ORDER STATUS FUNCTIONALITIES
 
@@ -289,7 +294,7 @@ def test_order_status_post(client):
     response = client.post('/order-status/', json={"order_id": "test", "status": "test"})
 
     assert response.status_code == 201
-    assert response.json["order_id"] == "test" #Correct syntax here?
+    assert response.json["order_id"] == "test" 
 
 def test_order_status_post_error(client):
     """

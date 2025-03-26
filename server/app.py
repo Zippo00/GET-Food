@@ -10,7 +10,7 @@ from api.routes.order_status_routes import order_status_bp
 
 app = Flask(__name__)
 app.config.from_object(Config)
-    
+
 db.init_app(app)
 
 #blueprints
@@ -21,7 +21,7 @@ app.register_blueprint(order_items_bp)
 app.register_blueprint(order_status_bp)
 
 with app.app_context():
-        db.create_all()
+    db.create_all()
 
 #Swagger initialization
 swagger = Swagger(app)
