@@ -31,11 +31,18 @@ order_items_bp = Blueprint('order_items', __name__, url_prefix='/order-items')
                     'quantity': {'type': 'integer'}
                 }
             }
+        },
+        400: {
+            'description': 'Missing required fields'
         }
     }
 })
 def add_item_to_order():
     data = request.get_json()
+
+    if not all(k in data for k in ('order_id', 'item_id', 'quantity')):
+        return jsonify({"error": "Missing required fields"}), 400
+
     order_item = OrderItem(
         id=str(uuid.uuid4()),
         order_id=data['order_id'],
@@ -45,7 +52,6 @@ def add_item_to_order():
     db.session.add(order_item)
     db.session.commit()
     return jsonify(order_item.deserialize()), 201
-
 
 @order_items_bp.route('/<order_id>', methods=['GET'])
 @swag_from({
@@ -74,10 +80,21 @@ def add_item_to_order():
                         'quantity': {'type': 'integer'}
                     }
                 }
+            },
+            'examples': {
+                'application/json': [
+                    {
+                        'id': 'uuid',
+                        'order_id': 'uuid',
+                        'item_id': 'uuid',
+                        'quantity': 2
+                    }
+                ]
             }
         }
     }
 })
+
 def get_items_by_order(order_id):
     items = OrderItem.query.filter_by(order_id=order_id).all()
     return jsonify([item.deserialize() for item in items]), 200
