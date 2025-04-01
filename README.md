@@ -10,7 +10,8 @@
 __Remember to include all required documentation and HOWTOs, including how to create and populate the database, how to run and test the API, the url to the entrypoint, instructions on how to setup and run the client, instructions on how to setup and run the axiliary service and instructions on how to deploy the api in a production environment__
 
 # <p align="center">Table of Contents</p>
-- [Setup Guide](#setup)
+- [Deployment via Docker](#deployment)
+- [Setup Guide for Direct Deployment](#setup)
     - [Running the Flask Backend (Server)](#backend)
     - [Running the React Frontend (Client)](#frontend)
 - [Database](#database)
@@ -36,7 +37,7 @@ To deploy the application locally:
 
 3. Navigate to `http://localhost` in your browser and you should see the UI of the application.
 
-# <p align="center">🚀 Setup Guide</p><a name="setup"></a>
+# <p align="center">🚀 Setup Guide for Direct Deployment</p><a name="setup"></a>
 
 
 ## <p align="center">Running the Flask Backend (Server)</p><a name="backend"></a>
