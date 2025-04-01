@@ -32,8 +32,9 @@ To deploy the application locally:
     docker compose up -d
     ```
 2. After Docker is finished building the environment, two containers should be up and running named **GET-Food-Server** and **GET-Food-Client**.
-    > [!NOTE] 
-    > **GET-Food-Client** container includes NGNIX as a proxy server to serve the client on the default **HTTP** port 80
+
+> [!NOTE] 
+> **GET-Food-Client** container includes NGNIX as a proxy server to serve the client on the default **HTTP** port 80
 
 3. Navigate to `http://localhost` in your browser and you should see the UI of the application.
 
