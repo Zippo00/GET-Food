@@ -5,7 +5,7 @@ class Image(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()), unique=True, nullable=False)
     name = db.Column(db.String(32), nullable=False)
     data = db.Column(db.LargeBinary, nullable=False)
-    item_id = db.Column(db.String(36), db.ForeignKey("item.id", ondelete="CASCADE"), nullable=False)
+    item_id = db.Column(db.String(36), db.ForeignKey("item.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
 
     def deserialize(self):
         return {

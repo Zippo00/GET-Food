@@ -4,7 +4,7 @@ from api.db import db
 class OrderItem(db.Model):
     __tablename__ = 'orderitem'
 
-    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()), nullable=False)
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()),unique=True, nullable=False)
     order_id = db.Column(db.String(36), db.ForeignKey("order.id", ondelete="CASCADE"), nullable=False)
     item_id = db.Column(db.String(36), db.ForeignKey("item.id", ondelete="CASCADE"), nullable=False)
     quantity = db.Column(db.Integer, nullable=False, default=1)

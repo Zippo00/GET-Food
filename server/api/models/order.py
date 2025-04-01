@@ -4,8 +4,7 @@ from api.db import db
 class Order(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()), unique=True, nullable=False)
     customer_name = db.Column(db.String(64), nullable=False)
-    created_at = db.Column(db.DateTime, server_default=db.func.now())
-
+    created_at = db.Column(db.DateTime,nullable=False, default=db.func.now())
 
     def deserialize(self):
         return {
