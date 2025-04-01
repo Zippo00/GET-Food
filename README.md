@@ -21,6 +21,21 @@ __Remember to include all required documentation and HOWTOs, including how to cr
 
 <br><br><br><br>
 
+# <p align="center">Deployment via Docker</p><a name="deployment"></a>
+The application can be deployed with the latest version of Docker. Docker automatically sets up the server and client, as well as populates the database with the data found in `example_data/example_data.csv`.
+
+To deploy the application locally:
+
+1. While in the root directory of the repository, build the Docker environment with:
+    ```console
+    docker compose up -d
+    ```
+2. After Docker is finished building the environment, two containers should be up and running named **GET-Food-Server** and **GET-Food-Client**.
+    > [!NOTE] 
+    > **GET-Food-Client** container includes NGNIX as a proxy server to serve the client on the default **HTTP** port 80
+
+3. Navigate to `http://localhost` in your browser and you should see the UI of the application.
+
 # <p align="center">🚀 Setup Guide</p><a name="setup"></a>
 
 
