@@ -7,6 +7,8 @@ class Image(db.Model):
     data = db.Column(db.LargeBinary, nullable=False)
     item_id = db.Column(db.String(36), db.ForeignKey("item.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
 
+    item = db.relationship("Item", back_populates="images",)
+
     def deserialize(self):
         return {
             "id": self.id, 

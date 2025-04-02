@@ -9,6 +9,9 @@ class OrderItem(db.Model):
     item_id = db.Column(db.String(36), db.ForeignKey("item.id", ondelete="CASCADE"), nullable=False)
     quantity = db.Column(db.Integer, nullable=False, default=1)
 
+    order = db.relationship("Order", back_populates="order_items")
+    item = db.relationship("Item", back_populates="order_items")
+
     def deserialize(self):
         return {
             "id": self.id,

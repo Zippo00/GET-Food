@@ -6,6 +6,9 @@ class Order(db.Model):
     customer_name = db.Column(db.String(64), nullable=False)
     created_at = db.Column(db.DateTime,nullable=False, default=db.func.now())
 
+    order_items = db.relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
+    order_status = db.relationship("OrderStatus", back_populates="order", cascade="all, delete-orphan")
+
     def deserialize(self):
         return {
             "id": self.id,

@@ -7,6 +7,15 @@ from api.routes.image_routes import image_bp
 from api.routes.orders_routes import orders_bp
 from api.routes.order_items_routes import order_items_bp
 from api.routes.order_status_routes import order_status_bp
+from sqlalchemy.engine import Engine
+from sqlalchemy import event
+
+#Enable foreign key constraints in SQLite	
+@event.listens_for(Engine, "connect")
+def set_sqlite_pragma(dbapi_connection, connection_record):
+    cursor = dbapi_connection.cursor()
+    cursor.execute("PRAGMA foreign_keys=ON")
+    cursor.close()
 
 app = Flask(__name__)
 app.config.from_object(Config)

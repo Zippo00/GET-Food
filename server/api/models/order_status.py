@@ -9,6 +9,8 @@ class OrderStatus(db.Model):
     status = db.Column(db.String(20), nullable=False)
     updated_at = db.Column(db.DateTime,nullable=False, default=db.func.now())
 
+    order = db.relationship("Order", back_populates="order_status")
+
     def deserialize(self):
         return {
             "id": self.id,
