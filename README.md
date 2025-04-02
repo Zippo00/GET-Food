@@ -43,7 +43,7 @@ To deploy the application locally:
 
 ## <p align="center">Running the Flask Backend (Server)</p><a name="backend"></a>
 
-### 1️⃣ Create and activate a Python Virutal Environment
+### 1️⃣ Create and activate a Python Virtual Environment
 
 1. Create a Python venv in the root directory of the repository with the command:
     ```console
