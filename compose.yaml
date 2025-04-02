@@ -6,7 +6,7 @@ services:
     container_name: GET-Food-Server
     restart: always
     ports:
-      - 127.0.0.1:5000:5000
+      - 195.148.22.156:5000:5000
     expose:
       - 5000
 
@@ -17,6 +17,6 @@ services:
     container_name: GET-Food-Client
     restart: always
     ports:
-      - 127.0.0.1:80:80
+      - 195.148.22.156:80:80
     expose:
       - 80
