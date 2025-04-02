@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://127.0.0.1:5000/api/order";
+const API_BASE_URL = "http://192.168.1.59:5000/api/order";
 
 export const placeOrder = async (orderItems) => {
   try {
