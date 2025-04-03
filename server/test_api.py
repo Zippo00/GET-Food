@@ -4,8 +4,11 @@ Unit tests for API.
 import pytest
 import base64
 import uuid
+import tempfile
+import os
 
-from app import app
+from app import app,db
+from api.models.order import Order
 
 #Generate base64 string from pizza_image.jpg and store it..
 with open("pizza_image.jpg", "rb") as img_file:
@@ -23,9 +26,20 @@ def client():
     """
     Provides a test client.
     """
+    db_fd, db_fname = tempfile.mkstemp()
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + db_fname
     app.config["TESTING"] = True
-    with app.test_client() as client:
-        yield client
+    
+    with app.app_context():
+        db.create_all()
+
+    yield app.test_client()
+
+    with app.app_context():
+        db.session.remove()
+
+    os.close(db_fd)
+    os.unlink(db_fname)
 
 # DEFAULT API FUNCTIONALITIES
 
@@ -359,3 +373,24 @@ def test_orders_post_error(client):
     """
     """
     pass
+
+def test_cleanup_db(client):
+    """
+    Test cleaning up the database after tests.
+    """
+
+    #cleanup all items
+    response_item = client.get('/items/')
+    for item in response_item.json:
+        client.delete(f'/items/{item["id"]}')
+
+    #cleanup all orders
+    response_order = client.get('/orders/')
+    for order in response_order.json:
+        client.delete(f'/orders/{order["id"]}')
+
+    #check cleanup
+    response_item = client.get('/items/')
+    assert response_item.json == []
+    response_order = client.get('/orders/')
+    assert response_order.json == []
