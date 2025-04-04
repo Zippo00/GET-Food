@@ -2,7 +2,6 @@
 Unit tests for Database.
 """
 import pytest
-import uuid
 import app
 import os
 import pytest
@@ -141,40 +140,194 @@ def test_create_instances(db_handle):
 
     #check that order status has the correct orderId
     assert db_order_status.order_id == db_order.id
-    
-# def test_item_image_one_to_many(db_handle):
-#     """
-#     Tests that the relationship between item and image is one-to-many.
-#     """
-    
-#     location = _get_location()
-#     sensor_1 = _get_sensor(1)
-#     sensor_2 = _get_sensor(2)
-#     sensor_1.location = location
-#     sensor_2.location = location
-#     db_handle.session.add(location)
-#     db_handle.session.add(sensor_1)
-#     db_handle.session.add(sensor_2)    
-#     with pytest.raises(IntegrityError):
-#         db_handle.session.commit()
-        
-# def test_image_ondelete_item(db_handle):
-#     """
-#     Tests that measurement's sensor foreign key is set to null when the sensor
-#     is deleted.
-#     """
-    
-#     measurement = _get_measurement()
-#     sensor = _get_sensor()
-#     measurement.sensor = sensor
-#     db_handle.session.add(measurement)
-#     db_handle.session.commit()
-#     db_handle.session.delete(sensor)
-#     db_handle.session.commit()
-#     assert measurement.sensor is None
 
-# def test_image_onupdate_item(db_handle):
-#     return
+def test_image_ondelete_item(db_handle):
+    """
+    Tests that image is deleted when the item
+    is deleted.
+    """
+    item = _get_item()
+    db_handle.session.add(item)
+    db_item = Item.query.first()
+
+    image = _get_image(db_item.id)
+    db_handle.session.add(image)
+    db_image = Image.query.first()
+
+    assert db_image.item_id == db_item.id
+
+    db_handle.session.commit()
+    db_handle.session.delete(db_item)
+
+    assert Item.query.first() is None
+
+    db_handle.session.commit()
+
+    assert Image.query.first() is None
+
+def test_image_onupdate_item(db_handle):
+    """
+    Tests that images foreign key is updated when the item
+    is updated.
+    """
+    item = _get_item()
+    db_handle.session.add(item)
+    db_item = Item.query.first()
+    image = _get_image(db_item.id)
+    db_handle.session.add(image)
+    db_handle.session.commit()
+    db_item.id = "new_id"
+    assert db_item.id == "new_id"
+    db_handle.session.commit()
+    assert image.item_id == db_item.id
+
+def test_order_item_ondelete_order(db_handle):
+    """
+    Tests that an order item is deleted when the order
+    is deleted.
+    """
+    item = _get_item()
+    db_handle.session.add(item)
+    db_item = Item.query.first()
+
+    order = _get_order()
+    db_handle.session.add(order)
+    db_order = Order.query.first()
+
+    order_item = get_order_item(db_order.id, db_item.id)
+    db_handle.session.add(order_item)
+    db_order_item = OrderItem.query.first()
+
+    assert db_order_item.order_id == db_order.id
+
+    db_handle.session.commit()
+    db_handle.session.delete(db_order)
+
+    assert Order.query.first() is None
+
+    db_handle.session.commit()
+
+    assert OrderItem.query.first() is None
+
+def test_order_item_ondelete_item(db_handle):
+    """
+    Tests that an order items is deleted when the item
+    is deleted.
+    """
+    item = _get_item()
+    db_handle.session.add(item)
+    db_item = Item.query.first()
+
+    order = _get_order()
+    db_handle.session.add(order)
+    db_order = Order.query.first()
+
+    order_item = get_order_item(db_order.id, db_item.id)
+    db_handle.session.add(order_item)
+    db_order_item = OrderItem.query.first()
+
+    assert db_order_item.item_id == db_item.id
+
+    db_handle.session.commit()
+    db_handle.session.delete(db_item)
+
+    assert Item.query.first() is None
+
+    db_handle.session.commit()
+
+    assert OrderItem.query.first() is None
+
+def test_order_item_onupdate_item(db_handle):
+    """
+    Tests that an order items foreign key is updated when the item
+    is updated.
+    """
+    item = _get_item()
+    db_handle.session.add(item)
+    db_item = Item.query.first()
+
+    order = _get_order()
+    db_handle.session.add(order)
+    db_order = Order.query.first()
+
+    order_item = get_order_item(db_order.id, db_item.id)
+    db_handle.session.add(order_item)
+    db_handle.session.commit()
+    
+    db_item.id = "new_id"
+    assert db_item.id == "new_id"
+    
+    db_handle.session.commit()
+    
+    assert order_item.item_id == db_item.id
+
+def test_order_item_onupdate_order(db_handle):
+    """
+    Tests that an order items foreign key is updated when the order
+    is updated.
+    """
+    item = _get_item()
+    db_handle.session.add(item)
+    db_item = Item.query.first()
+
+    order = _get_order()
+    db_handle.session.add(order)
+    db_order = Order.query.first()
+
+    order_item = get_order_item(db_order.id, db_item.id)
+    db_handle.session.add(order_item)
+    db_handle.session.commit()
+    
+    db_order.id = "new_id"
+    assert db_order.id == "new_id"
+    
+    db_handle.session.commit()
+    
+    assert order_item.order_id == db_order.id
+
+def test_order_status_ondelete_order(db_handle):
+    """
+    Tests that an order status is deleted when the order
+    is deleted.
+    """
+    order = _get_order()
+    db_handle.session.add(order)
+    db_order = Order.query.first()
+
+    order_status = _get_order_status(db_order.id)
+    db_handle.session.add(order_status)
+    db_order_status = OrderStatus.query.first()
+
+    assert db_order_status.order_id == db_order.id
+
+    db_handle.session.commit()
+    db_handle.session.delete(db_order)
+
+    assert Order.query.first() is None
+
+    db_handle.session.commit()
+
+    assert OrderStatus.query.first() is None
+
+def test_order_status_onupdate_order(db_handle):
+    """
+    Tests that the order status foreign keys is updated when the order
+    is updated.
+    """
+    order = _get_order()
+    db_handle.session.add(order)
+    db_order = Order.query.first()
+
+    order_status = _get_order_status(db_order.id)
+    db_handle.session.add(order_status)
+    db_handle.session.commit()
+    
+    db_order.id = "new_id"
+    assert db_order.id == "new_id"
+    
+    db_handle.session.commit()
+    
+    assert order_status.order_id == db_order.id
 
 def test_item_columns(db_handle):
     """
@@ -253,20 +406,25 @@ def test_image_columns(db_handle):
     Tests image columns' restrictions. 
     """
 
+    item= _get_item()
+    db_handle.session.add(item)
+    db_item = Item.query.first()
+
+    db_handle.session.commit()
+
     #test id not null
-    image = _get_image("test_id")
+    image = _get_image(db_item.id)
     db_handle.session.add(image)
-    assert Image.query.count() == 1
     db_image = Image.query.first()
     assert db_image.id is not None
 
-    db_handle.session.rollback()
+    db_handle.session.delete(db_image)
 
     #test id unique
-    image1 = _get_image("test_id")
+    image1 = _get_image(db_item.id)
     db_handle.session.add(image1)
     db_image1 = Image.query.first()
-    image2 = _get_image("test_id")
+    image2 = _get_image(db_item.id)
     image2.id = db_image1.id
     db_handle.session.add(image2)
     with pytest.raises(IntegrityError):
@@ -275,7 +433,7 @@ def test_image_columns(db_handle):
     db_handle.session.rollback()
 
     #test data not null
-    image = _get_image("test_id")
+    image = _get_image(db_item.id)
     image.data = None
     db_handle.session.add(image)
     with pytest.raises(IntegrityError):
@@ -284,7 +442,7 @@ def test_image_columns(db_handle):
     db_handle.session.rollback()
 
     #test data type
-    image = _get_image("test_id")
+    image = _get_image(db_item.id)
     image.data = "this is not binary data"
     db_handle.session.add(image)
     with pytest.raises(StatementError):
@@ -363,20 +521,27 @@ def test_order_item_columns(db_handle):
     Tests order item columns' restrictions.
     """
 
+    item = _get_item()
+    db_handle.session.add(item)
+    db_item = Item.query.first()
+    order = _get_order()
+    db_handle.session.add(order)
+    db_order = Order.query.first()
+
+    db_handle.session.commit()
+
     #test id not null
-    order_item = get_order_item("test_order_id", "test_item_id")
+    order_item = get_order_item(db_order.id,db_item.id)
     db_handle.session.add(order_item)
     assert OrderItem.query.count() == 1
     db_order_item = OrderItem.query.first()
     assert db_order_item.id is not None
 
-    db_handle.session.rollback()
-
     #test id unique
-    order_item1 = get_order_item("test_order_id", "test_item_id")
+    order_item1 = get_order_item(db_order.id,db_item.id)
     db_handle.session.add(order_item1)
     db_order_item1 = OrderItem.query.first()
-    order_item2 = get_order_item("test_order_id", "test_item_id")
+    order_item2 = get_order_item(db_order.id,db_item.id)
     order_item2.id = db_order_item1.id
     db_handle.session.add(order_item2)
     with pytest.raises(IntegrityError):
@@ -385,7 +550,7 @@ def test_order_item_columns(db_handle):
     db_handle.session.rollback()
 
     #test order_id not null
-    order_item = get_order_item(None, "test_item_id")
+    order_item = get_order_item(None,db_item.id)
     db_handle.session.add(order_item)
     with pytest.raises(IntegrityError):
         db_handle.session.commit()
@@ -393,7 +558,7 @@ def test_order_item_columns(db_handle):
     db_handle.session.rollback()
 
     #test item_id not null
-    order_item = get_order_item("test_order_id", None)
+    order_item = get_order_item(db_order.id,None)
     db_handle.session.add(order_item)
     with pytest.raises(IntegrityError):
         db_handle.session.commit()
@@ -401,16 +566,17 @@ def test_order_item_columns(db_handle):
     db_handle.session.rollback()
 
     #test quantity default value
-    order_item = get_order_item("test_order_id", "test_item_id")
+    order_item = get_order_item(db_order.id,db_item.id)
     order_item.quantity = None
     db_handle.session.add(order_item)
     db_order_item = OrderItem.query.first()
     assert db_order_item.quantity == 1
 
-    db_handle.session.rollback()
+    db_handle.session.delete(order_item)
+    assert OrderItem.query.count() == 0
 
     #test quantity type
-    order_item = get_order_item("test_order_id", "test_item_id")
+    order_item = get_order_item(db_order.id,db_item.id)
     order_item.quantity = 1,5
     db_handle.session.add(order_item)
     with pytest.raises(StatementError):
@@ -422,20 +588,26 @@ def test_order_status_columns(db_handle):
     """
     Tests order status columns' restrictions.
     """
+
+    order = _get_order()
+    db_handle.session.add(order)
+    db_order = Order.query.first()
+
+    db_handle.session.commit()
+
     #test id not null
-    order_status = _get_order_status("test_order_id")
+    order_status = _get_order_status(db_order.id)
     db_handle.session.add(order_status)
-    assert OrderStatus.query.count() == 1
     db_order_status = OrderStatus.query.first()
     assert db_order_status.id is not None
 
-    db_handle.session.rollback()
-
+    db_handle.session.delete(db_order_status)
+    
     #test id unique
-    order_status1 = _get_order_status("test_order_id")
+    order_status1 = _get_order_status(db_order.id)
     db_handle.session.add(order_status1)
     db_order_status1 = OrderStatus.query.first()
-    order_status2 = _get_order_status("test_order_id")
+    order_status2 = _get_order_status(db_order.id)
     order_status2.id = db_order_status1.id
     db_handle.session.add(order_status2)
     with pytest.raises(IntegrityError):
@@ -452,7 +624,7 @@ def test_order_status_columns(db_handle):
     db_handle.session.rollback()
 
     #test status not null
-    order_status = _get_order_status("test_order_id")
+    order_status = _get_order_status(db_order.id)
     order_status.status = None
     db_handle.session.add(order_status)
     with pytest.raises(IntegrityError):
@@ -461,7 +633,7 @@ def test_order_status_columns(db_handle):
     db_handle.session.rollback()
 
     #test updated_at type
-    order_status = _get_order_status("test_order_id")
+    order_status = _get_order_status(db_order.id)
     order_status.updated_at = str(order_status.updated_at) + "wrong"
     db_handle.session.add(order_status)
     with pytest.raises(StatementError):
@@ -470,12 +642,11 @@ def test_order_status_columns(db_handle):
     db_handle.session.rollback()
 
     #test updated_at sets default
-    order_status = _get_order_status("test_order_id")
+    assert Order.query.first() is not None
+    order_status = _get_order_status(db_order.id)
     order_status.updated_at = None
     db_handle.session.add(order_status)
     db_order_status = OrderStatus.query.first()
     assert db_order_status.updated_at is not None
-
-    db_handle.session.rollback()
 
     

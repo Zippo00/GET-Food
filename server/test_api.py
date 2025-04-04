@@ -262,7 +262,15 @@ def test_order_item_post(client):
     """
     Test adding item to an order.
     """
-    response = client.post('/order-items/', json={"item_id": "test", "order_id": "test", "quantity": 1})
+    client.post('/items/', json={"description": "test", "name": str(uuid.uuid4()), "price": 1})
+    client.post('/orders/', json={"customer_name": "test"})
+
+    response_items = client.get('/items/')
+    response_orders = client.get('/orders/')
+    item = response_items.json[0]
+    order = response_orders.json[0] 
+
+    response = client.post('/order-items/', json={"item_id": item['id'], "order_id": order['id'], "quantity": 1})
     assert response.status_code == 201
         # assert response.json["item_id"] == "test" TODO: check if works
 
@@ -312,9 +320,16 @@ def test_order_item_get_error(client):
 # ORDER STATUS FUNCTIONALITIES
 
 def test_order_status_post(client):
-    response = client.post('/order-status/', json={"order_id": "test", "status": "test"})
+    """
+    Test changing the status of an order.
+    """
+    client.post('/orders/', json={"customer_name": "test"})
+    response_orders = client.get('/orders/')
+    order = response_orders.json[0]
+
+    response = client.post('/order-status/', json={"order_id": order['id'], "status": "test"})
     assert response.status_code == 201
-    assert response.json["order_id"] == "test"
+    assert response.json["order_id"] == order['id']
 
 def test_order_status_post_error(client):
     """
@@ -328,8 +343,11 @@ def test_order_status_get(client):
     Test retrieving status history for a specific order.
     """
     # Update an order status
+    client.post('/orders/', json={"customer_name": "test"})
+    response_orders = client.get('/orders/')
+    order = response_orders.json[0]
 
-    client.post('/order-status/', json={"order_id": "123", "status": "test"})
+    client.post('/order-status/', json={"order_id": order['id'], "status": "test"})
     # Attempt to retrieve statys history
 
     response = client.get('/order-status/123')
