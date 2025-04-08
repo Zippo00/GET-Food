@@ -65,3 +65,6 @@ frontend/public/uploads/
 
 # ignore venv folder..
 server/venv/
+
+# ignore test.db
+server/test.db
