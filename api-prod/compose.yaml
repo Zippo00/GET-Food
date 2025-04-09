@@ -1,0 +1,28 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+     - ./:/var/www
+     - ./nginx.confg:/etc/nginx/nginx.conf
+    port:
+      -80:80
+    networks:
+      my-network
+    depends_on:
+      - flask
+  flask:
+    build:
+      context: .
+      dockerfile: Dockerfile.flask
+    container_name: flask
+    command: gunicorn --bind 0.0.0.0:8000 --workers 4 "app:app"
+    volumes:
+      - ./:/var/www
+    networks:
+      my-network:
+        aliases:
+          - flask-app
+
+networks:
+  my-network
