@@ -55,7 +55,7 @@ def init_app():
     db.init_app(app)
 
     # Enable CORS for the entire app
-    CORS(app)
+    CORS(app, resources={r"/api/*": {"origins": "*", "allow_headers": "*", "expose_headers": "*"}})
 
     #blueprints
     app.register_blueprint(item_bp)
