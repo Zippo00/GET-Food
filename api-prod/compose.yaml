@@ -5,7 +5,7 @@ services:
     volumes:
      - ./:/var/www
      - ./nginx.confg:/etc/nginx/nginx.conf
-    port:
+    ports:
       - 80:80
     networks:
       - my-network
