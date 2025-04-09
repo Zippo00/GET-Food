@@ -6,7 +6,7 @@ services:
      - ./:/var/www
      - ./nginx.confg:/etc/nginx/nginx.conf
     port:
-      -80:80
+      - 80:80
     networks:
       - my-network
     depends_on:
@@ -25,4 +25,4 @@ services:
           - flask-app
 
 networks:
-  my-network
+  my-network:
