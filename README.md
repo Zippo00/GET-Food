@@ -14,6 +14,7 @@ __Remember to include all required documentation and HOWTOs, including how to cr
 - [Setup Guide for Direct Deployment](#setup)
     - [Running the Flask Backend (Server)](#backend)
     - [Running the React Frontend (Client)](#frontend)
+- [API Documentations](#apidocs)
 - [Database](#database)
     - [Populating the Database](#populating)
 - [Unit tests](#unit-tests)
@@ -106,6 +107,13 @@ npm start
 
 > [!NOTE] 
 > This will start a development server at: http://localhost:3000/ *(the browser should open automatically)*.
+
+# <p align="center">API Documentations</p><a name="apidocs"></a>
+
+The API documentations are done with [Swagger](https://swagger.io/docs/). After you have the Flask application running, you can find the documentations via a browser at *URL*/**apidocs**. 
+
+For example, if you have the application running on localhost, you would find the API documentations at http://localhost/apidocs.
+
 
 # <p align="center">Database</p><a name="database"></a>
 
