@@ -4,7 +4,7 @@ services:
     container_name: nginx
     volumes:
      - ./:/var/www
-     - ./nginx.conf:/etc/nginx/nginx.conf
+     - ./default.conf:/etc/nginx/conf.d/default.conf
     ports:
       - 80:80
     networks:
@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: Dockerfile.flask
     container_name: flask
-    command: gunicorn --bind 0.0.0.0:8000 --workers 4 "server/app:app"
+    command: gunicorn --bind 0.0.0.0:8000 --chdir server --workers 4 "app:app"
     volumes:
       - ./:/var/www
     networks:
