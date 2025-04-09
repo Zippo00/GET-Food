@@ -1,4 +1,3 @@
-import uvicorn
 from flask import Flask
 from flasgger import Swagger
 from config import Config
