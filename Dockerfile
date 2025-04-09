@@ -17,5 +17,9 @@ RUN pip install --no-cache-dir --upgrade -r server/requirements.txt
 # Copy example_data into container and populate the db
 COPY --chown=user ./example_data $HOME/example_data
 RUN python ./server/populate_db.py ./example_data/example_data.csv
+
+#Expose port where flask app is running
+EXPOSE 5000
+
 # Launch the server on container start
 CMD ["python", "server/app.py"]

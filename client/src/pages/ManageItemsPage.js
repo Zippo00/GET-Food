@@ -10,14 +10,14 @@ const ManageItemsPage = () => {
     const fetchData = async () => {
       try {
         // Fetch food items
-        const foodResponse = await fetch('http://127.0.0.1:5000/items/');
+        const foodResponse = await fetch('http://195.148.22.156/api/items/');
         if (!foodResponse.ok) {
           throw new Error('Failed to fetch food data');
         }
         const foodData = await foodResponse.json();
 
         // Fetch list of images
-        const imageResponse = await fetch('http://127.0.0.1:5000/images/');
+        const imageResponse = await fetch('http://195.148.22.156/api/images/');
         if (!imageResponse.ok) {
           throw new Error('Failed to fetch images');
         }
@@ -26,7 +26,7 @@ const ManageItemsPage = () => {
         // Fetch actual image data one by one
         const imagePromises = imageList.map(async (image) => {
           const imageDetailResponse = await fetch(
-            `http://127.0.0.1:5000/images/${image.id}`,
+            `http://195.148.22.156/api/images/${image.id}`,
           );
           if (!imageDetailResponse.ok) {
             return null;
