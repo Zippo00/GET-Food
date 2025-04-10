@@ -7,6 +7,7 @@ from api.routes.image_routes import image_bp
 from api.routes.orders_routes import orders_bp
 from api.routes.order_items_routes import order_items_bp
 from api.routes.order_status_routes import order_status_bp
+from flask_cors import CORS
 from sqlalchemy.engine import Engine
 from sqlalchemy import event
 
@@ -17,10 +18,16 @@ def set_sqlite_pragma(dbapi_connection, connection_record):
     cursor.execute("PRAGMA foreign_keys=ON")
     cursor.close()
 
+
+
+
 app = Flask(__name__)
 app.config.from_object(Config)
 
 db.init_app(app)
+
+# Enable CORS for the entire app
+CORS(app) 
 
 #blueprints
 app.register_blueprint(item_bp)
@@ -58,6 +65,9 @@ def init_app():
     app.config.from_object(Config)
     
     db.init_app(app)
+    
+    # Enable CORS for the entire app
+    CORS(app) 
 
     #blueprints
     app.register_blueprint(item_bp)
@@ -98,4 +108,4 @@ def create_app():
 
 if __name__ == "__main__":
 #     app = create_app()
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")

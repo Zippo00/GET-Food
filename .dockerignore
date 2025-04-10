@@ -1,0 +1,31 @@
+__pycache__
+__pycache__/*
+.dockerignore
+Dockerfile
+Dockerfile.prod
+
+venv
+venv/*
+.venv
+.venv/*
+.gitignore
+compose.yaml
+
+README.md
+meetings.md
+LICENSE
+
+# Client
+client
+client/*
+
+
+# Unit test files
+server/pizza_image.jpg
+server/test_api.py
+server/test_db.py
+server/.pytest_cache
+server/.pytest_cache/*
+
+# Existing db
+server/test.db

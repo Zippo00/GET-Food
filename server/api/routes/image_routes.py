@@ -4,10 +4,10 @@ from api.models.image import Image
 from api.models.item import Item
 from api.db import db
 import base64
+import binascii
 
 image_bp = Blueprint("image", __name__, url_prefix="/images")
 
-# Get All Images
 @image_bp.route("/", methods=["GET"])
 @swag_from({
     "responses": {
@@ -24,9 +24,8 @@ image_bp = Blueprint("image", __name__, url_prefix="/images")
 })
 def get_images():
     images = Image.query.all()
-    return jsonify([image.deserialize() for image in images]), 200
+    return jsonify([image.deserialize(include_data=False) for image in images]), 200
 
-# Get Single Image by ID (UUID)
 @image_bp.route("/<string:image_id>", methods=["GET"])
 @swag_from({
     "parameters": [
@@ -60,9 +59,8 @@ def get_image(image_id):
     if not image:
         return jsonify({"error": "Image not found"}), 404
 
-    return jsonify(image.deserialize()), 200
+    return jsonify(image.deserialize(include_data=True)), 200
 
-# Upload Image (Base64 Encoded, UUID Item ID)
 @image_bp.route("/", methods=["POST"])
 @swag_from({
     "parameters": [
@@ -102,8 +100,8 @@ def upload_image():
         return jsonify({"error": "Item does not exist"}), 404
 
     try:
-        image_data = base64.b64decode(data["data"])  # Decoding Base64
-    except Exception:
+        image_data = base64.b64decode(data["data"])
+    except binascii.Error:
         return jsonify({"error": "Invalid Base64 image data"}), 400
 
     new_image = Image(
@@ -114,9 +112,8 @@ def upload_image():
     db.session.add(new_image)
     db.session.commit()
     
-    return jsonify(new_image.deserialize()), 201
+    return jsonify(new_image.deserialize(include_data=True)), 201
 
-# Delete Image by (UUID)
 @image_bp.route("/<string:image_id>", methods=["DELETE"])
 @swag_from({
     "parameters": [
