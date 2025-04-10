@@ -68,3 +68,42 @@ def create_order():
 def get_orders():
     orders = Order.query.all()
     return jsonify([o.deserialize() for o in orders]), 200
+
+
+# Delete an Order (UUID)
+@orders_bp.route("/<string:order_id>", methods=["DELETE"])
+@swag_from({
+    'tags': ['Orders'],
+    'summary': 'Delete the order with the order_id',
+    "parameters": [
+        {
+            "name": "order_id",
+            "in": "path",
+            "type": "string",
+            "required": True,
+            "description": "Order UUID"
+        }
+    ],
+    "responses": {
+        200: {
+            "description": "Order deleted successfully"
+        },
+        404: {
+            "description": "Order not found"
+        },
+        400: {
+            "description": "Invalid UUID format"
+        }
+    }
+})
+def delete_item(order_id):
+    try:
+        order = Order.query.get(order_id)
+        if not order:
+            return jsonify({"error": "Order not found"}), 404
+
+        db.session.delete(order)
+        db.session.commit()
+        return jsonify({"message": "Order deleted"}), 200
+    except ValueError:
+        return jsonify({"error": "Invalid UUID format"}), 400

@@ -39,6 +39,7 @@ coverage/
 *.pid
 *.seed
 *.orig
+.coverage
 
 # Editor/IDE files
 .vscode/

@@ -7,6 +7,9 @@ class Item(db.Model):
     price = db.Column(db.Float, nullable=False)
     description = db.Column(db.String(256), nullable=True)  
 
+    images = db.relationship("Image", back_populates="item", cascade="all, delete-orphan")
+    order_items = db.relationship("OrderItem", back_populates="item", cascade="all, delete-orphan")
+
     def deserialize(self):
         """Convert database object to JSON format."""
         return {
