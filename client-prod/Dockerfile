@@ -27,7 +27,7 @@ COPY --from=build /client/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # Expose HTTP port
-EXPOSE 80
+#EXPOSE 80
 
 # Start NGINX on container start
 CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
