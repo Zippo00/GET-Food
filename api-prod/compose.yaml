@@ -16,13 +16,10 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: GET-Food-API
-    #command: gunicorn --bind 0.0.0.0:8000 --chdir server --workers 4 "app:app"
     volumes:
       - ./:/var/www
     networks:
       - api-network
-        #aliases:
-        #  - api-network
 
 networks:
   api-network:

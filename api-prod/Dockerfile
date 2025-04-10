@@ -18,8 +18,5 @@ RUN pip install --no-cache-dir --upgrade -r server/requirements.txt
 COPY --chown=user ./example_data $HOME/example_data
 RUN python ./server/populate_db.py ./example_data/example_data.csv
 
-#Expose port where flask app is running
-#EXPOSE 5000
-
 # Launch the server on container start
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--chdir", "server", "--workers", "4", "app:app"]
