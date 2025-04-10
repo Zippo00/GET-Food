@@ -18,9 +18,6 @@ def set_sqlite_pragma(dbapi_connection, connection_record):
     cursor.execute("PRAGMA foreign_keys=ON")
     cursor.close()
 
-
-
-
 app = Flask(__name__)
 app.config.from_object(Config)
 
@@ -53,58 +50,6 @@ def home():
     """
     return {"message": "Welcome to the Food Ordering System API!"}, 200
 
-
-def init_app():
-    """
-    Initializes the Flask app.
-
-    Returns:
-        app (Flask): Flask app.
-    """
-    app = Flask(__name__)
-    app.config.from_object(Config)
-    
-    db.init_app(app)
-    
-    # Enable CORS for the entire app
-    CORS(app) 
-
-    #blueprints
-    app.register_blueprint(item_bp)
-    app.register_blueprint(image_bp)
-    app.register_blueprint(orders_bp)
-    app.register_blueprint(order_items_bp)
-    app.register_blueprint(order_status_bp)
-    return app
-
-def create_db(app):
-    """
-    Creates the initial database.
-    """
-    with app.app_context():
-        db.create_all()
-
-
-def create_app():
-    # Initialize app
-    app = init_app()
-
-    #Swagger initialization
-    swagger = Swagger(app)
-
-    create_db(app)
-
-    @app.route("/")
-    def home():
-        """Welcome message
-        ---
-        responses:
-          200:
-            description: Welcome message
-        """
-        return {"message": "Welcome to the Food Ordering System API!"}, 200
-
-    return app
 
 if __name__ == "__main__":
 #     app = create_app()
