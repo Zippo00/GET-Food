@@ -1,4 +1,4 @@
-# Server Dockerfile
+# API Server Dockerfile
 FROM python:3.12.3-slim
 
 # Do everything as user
@@ -22,4 +22,4 @@ RUN python ./server/populate_db.py ./example_data/example_data.csv
 #EXPOSE 5000
 
 # Launch the server on container start
-#CMD ["python", "server/app.py"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--chdir", "server", "--workers", "4", "'app:app'"]

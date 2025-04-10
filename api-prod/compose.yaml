@@ -8,21 +8,21 @@ services:
     ports:
       - 80:80
     networks:
-      - my-network
+      - api-network
     depends_on:
-      - flask
-  flask:
+      - api-server
+  api-server:
     build:
       context: .
-      dockerfile: Dockerfile.flask
-    container_name: flask
-    command: gunicorn --bind 0.0.0.0:8000 --chdir server --workers 4 "app:app"
+      dockerfile: Dockerfile
+    container_name: GET-Food-API
+    #command: gunicorn --bind 0.0.0.0:8000 --chdir server --workers 4 "app:app"
     volumes:
       - ./:/var/www
     networks:
-      my-network:
-        aliases:
-          - flask-app
+      - api-network
+        #aliases:
+        #  - api-network
 
 networks:
-  my-network:
+  api-network:
