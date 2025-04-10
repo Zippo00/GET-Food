@@ -107,6 +107,13 @@ npm start
 > [!NOTE] 
 > This will start a development server at: http://localhost:3000/ *(the browser should open automatically)*.
 
+# <p align="center">API Documentations</p><a name="apidocs"></a>
+
+The API documentations are done with [Swagger](https://swagger.io/docs/). After you have the Flask application running, you can find the documentations via a browser at *URL*/**apidocs**. 
+
+For example, if you have the application running on localhost, you would find the API documentations at http://localhost/apidocs.
+
+
 # <p align="center">Database</p><a name="database"></a>
 
 This app uses `SQLAlchemy` in combination with `pysqlite3` as a database so it should generally be compatible with any sqlite database.
