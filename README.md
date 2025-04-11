@@ -1,16 +1,17 @@
 # PWP SPRING 2025
-# PROJECT NAME
+# Northern Light
 # Group information
 * Mikko Lempinen, mikko.lempinen@oulu.fi
 * Mohamed Al-Ajily, malajily24@student.oulu.fi
 * Lukas Hoffmann, lhoffman24@student.oulu.fi
-* Student 4. Name and email
+* Abu Roman, aroman24@student.oulu.fi
 
 
 __Remember to include all required documentation and HOWTOs, including how to create and populate the database, how to run and test the API, the url to the entrypoint, instructions on how to setup and run the client, instructions on how to setup and run the axiliary service and instructions on how to deploy the api in a production environment__
 
 # <p align="center">Table of Contents</p>
-- [Deployment via Docker](#deployment)
+- [Deployment in Production Environment](#production)
+- [Local Deployment via Docker](#deployment)
 - [Setup Guide for Direct Deployment](#setup)
     - [Running the Flask Backend (Server)](#backend)
     - [Running the React Frontend (Client)](#frontend)
@@ -19,11 +20,18 @@ __Remember to include all required documentation and HOWTOs, including how to cr
     - [Populating the Database](#populating)
 - [Unit tests](#unit-tests)
     - [Running API unit tests](#api-tests)
-    - [Running Database unit tests](#db-tests)
 
 <br><br><br><br>
+# <p align="center">Deployment in Production Environment</p><a name="deployment"></a>
+The API and Client can be deployed in a production environment.
 
-# <p align="center">Deployment via Docker</p><a name="deployment"></a>
+ Branch **`prod`** includes detailed instructions on how this can be done.
+
+ The instructions described from here on are meant for local deployment only, and differ from the instructions found in `prod` branch.
+<br><br><br>
+
+
+# <p align="center">Local Deployment via Docker</p><a name="deployment"></a>
 The application can be deployed with the latest version of Docker. Docker automatically sets up the server and client, as well as populates the database with the data found in `example_data/example_data.csv`.
 
 To deploy the application locally:
@@ -137,7 +145,7 @@ python ./server/populate_db.py path/to/data.csv
 
 # <p align="center">Unit tests</p><a name="unit-tests"></a>
 
-The repository contains unit tests for testing the functionalitites of the **API server** and the **Database**.
+The repository contains unit tests for testing the functionalitites of the **API endpoint**.
 
 ## <p align="center">Running API unit tests</p><a name="api-tests"></a>
 
@@ -152,6 +160,3 @@ After the backend (server) has been successfully set up, you can run the unit te
     pytest test_api.py
     ```
 
-## <p align="center">Running Database unit tests</p><a name="db-tests"></a>
-
-TODO
