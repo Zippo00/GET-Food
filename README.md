@@ -1,3 +1,6 @@
+# YOU ARE IN THE PRODUCTION BRANCH. FOR LOCAL USAGE/DEPLOYMENT, SEE `MAIN` BRANCH.
+<br><br><br>
+
 # PWP SPRING 2025
 # PROJECT NAME
 # Group information
@@ -11,146 +14,55 @@ __Remember to include all required documentation and HOWTOs, including how to cr
 
 # <p align="center">Table of Contents</p>
 - [Deployment via Docker](#deployment)
-- [Setup Guide for Direct Deployment](#setup)
-    - [Running the Flask Backend (Server)](#backend)
-    - [Running the React Frontend (Client)](#frontend)
-- [Database](#database)
-    - [Populating the Database](#populating)
-- [Unit tests](#unit-tests)
-    - [Running API unit tests](#api-tests)
-    - [Running Database unit tests](#db-tests)
-
+    - [Deploy the API server](#deploy-api)
+    - [Deploy the Client](#deploy-client)
 <br><br><br><br>
 
 # <p align="center">Deployment via Docker</p><a name="deployment"></a>
 The application can be deployed with the latest version of Docker. Docker automatically sets up the server and client, as well as populates the database with the data found in `example_data/example_data.csv`.
 
-To deploy the application locally:
+## <p align="center">1. Deploy the API server</p><a name="deploy-api"></a>
 
-1. While in the root directory of the repository, build the Docker environment with:
+The production version of the API is configured to use a combination of [gunicorn](https://gunicorn.org/) and [nginx](https://nginx.org/) to serve the API.
+
+1. Clone this repository to the machine you wish to deploy the API server on.
+
+2. Navigate to the `api-prod` directory with: 
+    ```console
+    cd GET-Food/api-prod
+    ```
+
+3. Modify the `server_name` and `proxy_set_header` variables on lines **7** and **11** in the `default.conf` file to the IP or domain name you wish to deploy the API on.
+
+4. Build the Docker environment with:
+    ```console
+    docker build compose up -d
+    ```
+
+5. Docker should build the containerized environment succesfully, and you can now use the API through the IP or domain you set up in the `api-prod/default.conf` file.
+
+## <p align="center">1. Deploy the Client</p><a name="deploy-client"></a>
+
+1. Clone this repository on the machine you wish to deploy the client on.
+
+2. There's quite a few hard-coded URLs that need to be changed in the JavaScript files found in `GET-Food/client-prod/src`.
+
+    Go through each of the JS files in `GET-Food/client-prod/src/components/`, `GET-Food/client-prod/src/pages/`, and `GET-Food/client-prod/src/services/` and change each instance of 'http://195.148.30.99' you find to the corresponding IP or domain name you set up in the [Deploy the API](#deploy-api) section.
+
+3. Similarly as in the API deployment section, you need to change the IPs in `client-prod/compose.yaml` and `nginx.conf` to reflect the IPs of the machine you are deploying the client on.
+
+    - Change the **line 9** in `client-prod/compose.yaml` to the internal IP-address of your machine.
+
+    - Change the `server_name` variable on **line 14** of the `client-prod/nginx.conf` file to the public IP address or domain name you are deploying the client on.
+
+4. After the files are modified, navigate to the `client-prod` directory with:
+    ```console
+    cd GET-Food/client-prod
+    ```
+
+5. Build the Docker environment with:
     ```console
     docker compose up -d
     ```
-2. After Docker is finished building the environment, two containers should be up and running named **GET-Food-Server** and **GET-Food-Client**.
 
-> [!NOTE] 
-> **GET-Food-Client** container includes NGINX as a proxy server to serve the client on the default **HTTP** port 80.
-
-3. Navigate to `http://localhost` in your browser and you should see the UI of the application.
-
-# <p align="center">🚀 Setup Guide for Direct Deployment</p><a name="setup"></a>
-
-
-## <p align="center">Running the Flask Backend (Server)</p><a name="backend"></a>
-
-### 1️⃣ Create and activate a Python Virtual Environment
-
-1. Create a Python venv in the root directory of the repository with the command:
-    ```console
-    python -m venv venv
-    ```
-2. Activate the created virtual environment.
-    - On **macOS** & **Linux** with:
-    ```console
-    source venv/bin/activate
-    ```
-    - On **Windows** with:
-    ```console
-    source venv\Scripts\activate
-    ```
-
-### 2️⃣ Install Python Dependencies
-
-Once the virtual environment is activated, install the required Python libraries with:
-```console
-pip install -r server/requirements.txt
-```
-
-### 3️⃣ Run the Flask Server
-Start the Flask backend with:
-
-```console
-python server/app.py
-```
-
-> [!NOTE] 
-> By default, Flask runs at: http://127.0.0.1:5000/
-
-
-## <p align="center">⚛️ Running the React Frontend (Client)</p><a name="frontend"></a>
-
-
-### 1️⃣ Navigate to the Frontend Folder
-
-Open a new terminal or command prompt and move into the React (client) folder:
-
-```console
-cd client
-```
-
-### 2️⃣ Install Dependencies
-
-Before running React, install the necessary Node.js packages:
-
-```console
-npm install
-```
-
-### 3️⃣ Start the React Development Server
-
-To launch the frontend, run:
-
-```console
-npm start
-```
-
-> [!NOTE] 
-> This will start a development server at: http://localhost:3000/ *(the browser should open automatically)*.
-
-# <p align="center">API Documentations</p><a name="apidocs"></a>
-
-The API documentations are done with [Swagger](https://swagger.io/docs/). After you have the Flask application running, you can find the documentations via a browser at *URL*/**apidocs**. 
-
-For example, if you have the application running on localhost, you would find the API documentations at http://localhost/apidocs.
-
-
-# <p align="center">Database</p><a name="database"></a>
-
-This app uses `SQLAlchemy` in combination with `pysqlite3` as a database so it should generally be compatible with any sqlite database.
-
-## <p align="center">Populating the Database</p><a name="populating"></a>
-
-You can initially populate the Database with the provided script. The data for the population should be in an csv-file, with each row beeing an individual food item, its properties being seperated by a comma and a semicolon indicating the corresponding pictures. You seperate the food items using a line break to indicate the next food item. 
-
-An example-file, `example_data.csv` with some images can be found in the `example_data` folder. Note that the path to the image is expected to be a relative path. You can populate the database with the example data by running the following *(when in the project folder)*:
-
-```console
-python ./server/populate_db.py ./example_data/example_data.csv
-```
-
-You can then accordingly run the script for populating the database using the following command *(when in the project folder)*: 
-
-```console
-python ./server/populate_db.py path/to/data.csv
-```
-
-# <p align="center">Unit tests</p><a name="unit-tests"></a>
-
-The repository contains unit tests for testing the functionalitites of the **API server** and the **Database**.
-
-## <p align="center">Running API unit tests</p><a name="api-tests"></a>
-
-After the backend (server) has been successfully set up, you can run the unit tests for the API by:
-
-1. Navigate to the `server` folder with:
-    ```console
-    cd GET-Food/server
-    ```
-2. Run the unit tests with:
-    ```console
-    pytest test_api.py
-    ```
-
-## <p align="center">Running Database unit tests</p><a name="db-tests"></a>
-
-TODO
+6. Docker should build the containerized environment succesfully, and you can now use the client through the IP or domain you set up in the `client-prod/nginx.conf` file.
