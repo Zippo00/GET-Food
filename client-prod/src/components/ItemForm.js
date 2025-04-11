@@ -28,7 +28,7 @@ const ItemForm = () => {
 
     try {
       const response = await axios.post(
-        'http://127.0.0.1:5000/items/',
+        'http://195.148.30.99/items/',
         itemData,
       );
       const itemId = response.data.id; // Assume the backend returns the item ID
@@ -47,7 +47,7 @@ const ItemForm = () => {
           };
 
           try {
-            await axios.post('http://127.0.0.1:5000/images/', imageData);
+            await axios.post('http://195.148.30.99/images/', imageData);
             setSuccess('Item and image successfully added!');
           } catch (err) {
             setError('Failed to upload image');

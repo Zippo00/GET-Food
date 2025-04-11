@@ -9,7 +9,7 @@ const OrderTable = ({ orders, setOrders }) => {
   // Fetch item names
   const fetchItemName = async (itemId) => {
     try {
-      const response = await fetch(`http://localhost:5000/items/${itemId}`);
+      const response = await fetch(`http://195.148.30.99/items/${itemId}`);
       const data = await response.json();
       if (data && data.name) {
         setItemNames((prev) => ({ ...prev, [itemId]: data.name }));
@@ -25,7 +25,7 @@ const OrderTable = ({ orders, setOrders }) => {
     fetchedStatusSet.add(orderId);
     try {
       const response = await fetch(
-        `http://localhost:5000/order-status/${orderId}`,
+        `http://195.148.30.99/order-status/${orderId}`,
       );
       const data = await response.json();
 

@@ -9,7 +9,7 @@ const ManageItems = ({ foodItems }) => {
     if (!window.confirm('Are you sure you want to delete this item?')) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/items/${itemId}`, {
+      const response = await fetch(`http://195.148.30.99/items/${itemId}`, {
         method: 'DELETE',
       });
 
@@ -30,7 +30,7 @@ const ManageItems = ({ foodItems }) => {
   const handleModify = async (updatedItem) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/items/${updatedItem.id}`,
+        `http://195.148.30.99/items/${updatedItem.id}`,
         {
           method: 'PUT',
           headers: {

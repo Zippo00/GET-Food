@@ -28,7 +28,7 @@ const FoodItem = ({ id, name, price, description, images = [] }) => {
   // Fetch order ID from backend
   const fetchOrderId = async (customerName) => {
     try {
-      const response = await fetch('http://localhost:5000/orders/', {
+      const response = await fetch('http://195.148.30.99/orders/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ customer_name: customerName }), // Send customer name
@@ -78,7 +78,7 @@ const FoodItem = ({ id, name, price, description, images = [] }) => {
     };
 
     try {
-      const response = await fetch('http://localhost:5000/order-items/', {
+      const response = await fetch('http://195.148.30.99/order-items/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData),
