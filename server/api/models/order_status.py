@@ -5,9 +5,11 @@ class OrderStatus(db.Model):
     __tablename__ = 'order_status'
 
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()), unique=True, nullable=False)
-    order_id = db.Column(db.String(36), db.ForeignKey("order.id", ondelete="CASCADE"), nullable=False)
+    order_id = db.Column(db.String(36), db.ForeignKey("order.id", ondelete="CASCADE",onupdate="CASCADE"), nullable=False)
     status = db.Column(db.String(20), nullable=False)
-    updated_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime,nullable=False, default=db.func.now())
+
+    order = db.relationship("Order", back_populates="order_status")
 
     def deserialize(self):
         return {

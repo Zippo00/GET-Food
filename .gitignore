@@ -1,3 +1,5 @@
+server/template_image_base64.txt
+
 # General OS files
 .DS_Store
 Thumbs.db
@@ -37,6 +39,7 @@ coverage/
 *.pid
 *.seed
 *.orig
+.coverage
 
 # Editor/IDE files
 .vscode/
@@ -63,3 +66,6 @@ frontend/public/uploads/
 
 # ignore venv folder..
 server/venv/
+
+# ignore test.db
+server/test.db
