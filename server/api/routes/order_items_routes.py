@@ -53,7 +53,8 @@ def add_item_to_order():
     db.session.commit()
     return jsonify(order_item.deserialize()), 201
 
-@order_items_bp.route('/<order_id>', methods=['GET'])
+
+@order_items_bp.route('/<order_id>/items', methods=['GET'])
 @swag_from({
     'tags': ['Order Items'],
     'summary': 'Get all items for a specific order',
@@ -94,7 +95,6 @@ def add_item_to_order():
         }
     }
 })
-
 def get_items_by_order(order_id):
     items = OrderItem.query.filter_by(order_id=order_id).all()
     return jsonify([item.deserialize() for item in items]), 200

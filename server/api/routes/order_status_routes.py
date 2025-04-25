@@ -52,6 +52,7 @@ def update_status():
     db.session.commit()
     return jsonify(status.deserialize()), 201
 
+
 @order_status_bp.route('/<order_id>', methods=['GET'])
 @swag_from({
     'tags': ['Order Status'],
@@ -85,4 +86,38 @@ def update_status():
 })
 def get_status_history(order_id):
     statuses = OrderStatus.query.filter_by(order_id=order_id).order_by(OrderStatus.updated_at.asc()).all()
+    return jsonify([s.deserialize() for s in statuses]), 200
+
+
+@order_status_bp.route('/', methods=['GET'])
+@swag_from({
+    'tags': ['Order Status'],
+    'summary': 'Filter orders by status',
+    'parameters': [
+        {
+            'name': 'status',
+            'in': 'query',
+            'type': 'string',
+            'required': True,
+            'description': 'Order status value'
+        }
+    ],
+    'responses': {
+        200: {
+            'description': 'Filtered status list',
+            'schema': {
+                'type': 'array',
+                'items': OrderStatus.json_schema()
+            }
+        },
+        400: {
+            'description': 'Missing required status parameter'
+        }
+    }
+})
+def get_orders_by_status():
+    status = request.args.get('status')
+    if not status:
+        return jsonify({'error': 'Status parameter is required'}), 400
+    statuses = OrderStatus.query.filter_by(status=status).all()
     return jsonify([s.deserialize() for s in statuses]), 200
