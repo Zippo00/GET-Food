@@ -149,7 +149,7 @@ The repository contains unit tests for testing the functionalitites of the **API
 
 ## <p align="center">Running API unit tests</p><a name="api-tests"></a>
 
-After the backend (server) has been successfully set up, you can run the unit tests for the API by:
+After the backend (server) has been successfully set up, you can run the unit tests for the API and DB by:
 
 1. Navigate to the `server` folder with:
     ```console
@@ -159,4 +159,7 @@ After the backend (server) has been successfully set up, you can run the unit te
     ```console
     pytest test_api.py
     ```
-
+3. Run the database tests with 
+    ```console
+    pytest test_db.py
+    ```
