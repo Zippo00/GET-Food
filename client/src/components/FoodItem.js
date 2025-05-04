@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ImageSlider from './ImageSlider';
-
+import { BASE_URL } from '../services/api'; // Import the BASE_URL/api url from api.js
 const FoodItem = ({ id, name, price, description, images = [] }) => {
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -28,7 +28,7 @@ const FoodItem = ({ id, name, price, description, images = [] }) => {
   // Fetch order ID from backend
   const fetchOrderId = async (customerName) => {
     try {
-      const response = await fetch('http://localhost:5000/orders/', {
+      const response = await fetch(`${BASE_URL}/orders/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ customer_name: customerName }), // Send customer name
@@ -78,7 +78,7 @@ const FoodItem = ({ id, name, price, description, images = [] }) => {
     };
 
     try {
-      const response = await fetch('http://localhost:5000/order-items/', {
+      const response = await fetch(`${BASE_URL}/order-items/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData),
@@ -99,7 +99,7 @@ const FoodItem = ({ id, name, price, description, images = [] }) => {
 
   // Function to cancel the order
   const cancelOrder = () => {
-    setShowModal(false); // Close the modal without placing the order
+    setShowModal(false);
   };
 
   return (

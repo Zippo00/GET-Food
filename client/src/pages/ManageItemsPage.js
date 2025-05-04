@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ManageItems from '../components/ManageItems';
-
+import { BASE_URL } from '../services/api'; // Import the BASE_URL/api url from api.js
 const ManageItemsPage = () => {
   const [foodData, setFoodData] = useState([]); // State to hold fetched food items with images
   const [loading, setLoading] = useState(true); // To manage loading state
@@ -10,14 +10,14 @@ const ManageItemsPage = () => {
     const fetchData = async () => {
       try {
         // Fetch food items
-        const foodResponse = await fetch('http://localhost:5000/items/');
+        const foodResponse = await fetch(`${BASE_URL}/items/`);
         if (!foodResponse.ok) {
           throw new Error('Failed to fetch food data');
         }
         const foodData = await foodResponse.json();
 
         // Fetch list of images
-        const imageResponse = await fetch('http://localhost:5000/images/');
+        const imageResponse = await fetch(`${BASE_URL}/images/`);
         if (!imageResponse.ok) {
           throw new Error('Failed to fetch images');
         }
@@ -26,7 +26,7 @@ const ManageItemsPage = () => {
         // Fetch actual image data one by one
         const imagePromises = imageList.map(async (image) => {
           const imageDetailResponse = await fetch(
-            `http://localhost:5000/images/${image.id}`,
+            `${BASE_URL}/images/${image.id}`,
           );
           if (!imageDetailResponse.ok) {
             return null;
