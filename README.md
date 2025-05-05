@@ -45,9 +45,7 @@ The production version of the API is configured to use a combination of [gunicor
 
 1. Clone this repository on the machine you wish to deploy the client on.
 
-2. There's quite a few hard-coded URLs that need to be changed in the JavaScript files found in `GET-Food/client-prod/src`.
-
-    Go through each of the JS files in `GET-Food/client-prod/src/components/`, `GET-Food/client-prod/src/pages/`, and `GET-Food/client-prod/src/services/` and change each instance of 'http://195.148.30.99' you find to the corresponding IP or domain name you set up in the [Deploy the API server](#deploy-api) section.
+2. Change `BASE_URL` variable in `client-api/src/services/api.js` to the corresponding IP or domain name you configured the API to be served at in the [Deploy the API server](#deploy-api) section.
 
 3. Similarly as in the API deployment section, you need to change the IPs in `client-prod/compose.yaml` and `nginx.conf` to reflect the IPs of the machine you are deploying the client on.
 
