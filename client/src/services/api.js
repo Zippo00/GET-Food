@@ -1,4 +1,4 @@
-const BASE_URL = 'http://127.0.0.1:5000'; // our Backend base URL
+export const BASE_URL = 'http://127.0.0.1:5000'; // our Backend base URL
 
 export const fetchItems = async () => {
   const response = await fetch(`${BASE_URL}/items/`);

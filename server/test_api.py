@@ -302,7 +302,7 @@ def test_order_item_get(client):
     })
 
     # Retrieve the items for the order
-    response2 = client.get(f'/order-items/{order_id}')
+    response2 = client.get(f'/order-items/{order_id}/items')
 
     assert response2.status_code == 200
     assert isinstance(response2.json, list)

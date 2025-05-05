@@ -19,7 +19,6 @@ __Remember to include all required documentation and HOWTOs, including how to cr
 - [Database](#database)
     - [Populating the Database](#populating)
 - [Unit tests](#unit-tests)
-    - [Running API unit tests](#api-tests)
 
 <br><br><br><br>
 # <p align="center">Deployment in Production Environment</p><a name="deployment"></a>
@@ -147,19 +146,22 @@ python ./server/populate_db.py path/to/data.csv
 
 The repository contains unit tests for testing the functionalitites of the **API endpoint**.
 
-## <p align="center">Running API unit tests</p><a name="api-tests"></a>
 
-After the backend (server) has been successfully set up, you can run the unit tests for the API and DB by:
+After the backend (server) has been successfully set up, you can run the unit tests for the **API** and **Database**:
+
 
 1. Navigate to the `server` folder with:
     ```console
     cd GET-Food/server
     ```
-2. Run the unit tests with:
+2. Run the **API** unit tests with:
     ```console
     pytest test_api.py
     ```
-3. Run the database tests with 
+
+3. Run the **database** unit tests with 
     ```console
     pytest test_db.py
     ```
+
+

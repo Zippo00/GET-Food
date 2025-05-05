@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { BASE_URL } from '../services/api'; // Import the BASE_URL/api url from api.js
 
 const statusOptions = [
   'All',
@@ -11,39 +12,58 @@ const statusOptions = [
 const OrderStatusTable = ({ orders, setOrders }) => {
   const [itemNames, setItemNames] = useState({});
   const [orderStatuses, setOrderStatuses] = useState({});
+  const [orderItems, setOrderItems] = useState({});
   const [isUpdating, setIsUpdating] = useState(false);
-  const fetchedStatusSet = new Set(); // Track fetched statuses
+  const fetchedStatusSet = new Set();
 
-  // Fetch item names
+  // Fetch item name
   const fetchItemName = async (itemId) => {
+    if (itemNames[itemId]) return; // Prevent duplicate fetches
     try {
-      const response = await fetch(`http://localhost:5000/items/${itemId}`);
+      const response = await fetch(`${BASE_URL}/items/${itemId}`);
       const data = await response.json();
-      if (data && data.name) {
+      if (data?.name) {
         setItemNames((prev) => ({ ...prev, [itemId]: data.name }));
       }
     } catch (error) {
-      console.error('Error fetching item name:', error);
+      console.error(`Error fetching item name for ID ${itemId}:`, error);
     }
   };
 
-  // Fetch order status one by one
+  // Fetch items for order
+  const fetchItemsForOrder = async (orderId) => {
+    try {
+      const response = await fetch(`${BASE_URL}/order-items/${orderId}/items`);
+      const data = await response.json();
+
+      if (Array.isArray(data)) {
+        setOrderItems((prev) => ({ ...prev, [orderId]: data }));
+
+        // Fetch names for each item
+        for (const item of data) {
+          await fetchItemName(item.item_id);
+        }
+      }
+    } catch (error) {
+      console.error(`Error fetching items for order ${orderId}:`, error);
+    }
+  };
+
+  // Fetch order status
   const fetchOrderStatus = async (orderId) => {
-    if (fetchedStatusSet.has(orderId)) return; // Prevent duplicate fetches
+    if (fetchedStatusSet.has(orderId)) return;
     fetchedStatusSet.add(orderId);
     try {
-      const response = await fetch(
-        `http://localhost:5000/order-status/${orderId}`,
-      );
+      const response = await fetch(`${BASE_URL}/order-status/${orderId}`);
       const data = await response.json();
 
       if (data.length > 0) {
-        const latestStatusEntry = data[data.length - 1];
+        const latestStatus = data[data.length - 1];
         setOrderStatuses((prev) => ({
           ...prev,
           [orderId]: {
-            status: latestStatusEntry.status,
-            updated_at: latestStatusEntry.updated_at,
+            status: latestStatus.status,
+            updated_at: latestStatus.updated_at,
           },
         }));
       } else {
@@ -54,24 +74,13 @@ const OrderStatusTable = ({ orders, setOrders }) => {
       }
     } catch (error) {
       console.error(`Error fetching status for order ${orderId}:`, error);
-      setOrderStatuses((prev) => ({
-        ...prev,
-        [orderId]: { status: 'Pending', updated_at: null },
-      }));
     }
   };
 
   useEffect(() => {
     orders.forEach((order) => {
-      order.items.forEach((item) => {
-        if (!itemNames[item.item_id]) {
-          fetchItemName(item.item_id);
-        }
-      });
-
-      if (orderStatuses[order.id] === undefined) {
-        fetchOrderStatus(order.id);
-      }
+      fetchItemsForOrder(order.id);
+      fetchOrderStatus(order.id);
     });
   }, [orders]);
 
@@ -81,7 +90,7 @@ const OrderStatusTable = ({ orders, setOrders }) => {
 
     setIsUpdating(true);
     try {
-      const response = await fetch('http://localhost:5000/order-status/', {
+      const response = await fetch(`${BASE_URL}/order-status/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ order_id: orderId, status: newStatus }),
@@ -89,12 +98,11 @@ const OrderStatusTable = ({ orders, setOrders }) => {
 
       if (!response.ok) throw new Error('Failed to update order status');
 
-      // Update status and timestamp immediately
       setOrderStatuses((prev) => ({
         ...prev,
         [orderId]: {
           status: newStatus,
-          updated_at: new Date().toISOString(), // Set to current time
+          updated_at: new Date().toISOString(),
         },
       }));
 
@@ -159,10 +167,9 @@ const OrderStatusTable = ({ orders, setOrders }) => {
                     )
                   : 'N/A'}
               </td>
-
               <td className="py-3 px-4 text-sm text-gray-700">
                 <ul>
-                  {order.items.map((item) => (
+                  {(orderItems[order.id] || []).map((item) => (
                     <li key={item.id}>
                       <strong>{itemNames[item.item_id] || 'Loading...'}</strong>{' '}
                       (Qty: {item.quantity})
