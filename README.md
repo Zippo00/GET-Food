@@ -36,7 +36,7 @@ The production version of the API is configured to use a combination of [gunicor
 
 4. Build the Docker environment with:
     ```console
-    docker build compose up -d
+    docker compose up -d
     ```
 
 5. Docker should build the containerized environment succesfully, and you can now use the API through the IP or domain you set up in the `api-prod/default.conf` file.
