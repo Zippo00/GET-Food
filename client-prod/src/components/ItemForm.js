@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { BASE_URL } from '../services/api'; // Import the BASE_URL/api url from api.js
 
 const ItemForm = () => {
   const [name, setName] = useState('');
@@ -27,10 +28,7 @@ const ItemForm = () => {
     };
 
     try {
-      const response = await axios.post(
-        'http://195.148.30.99/items/',
-        itemData,
-      );
+      const response = await axios.post(`${BASE_URL}/items/`, itemData);
       const itemId = response.data.id; // Assume the backend returns the item ID
 
       // After item is successfully created, upload the image
@@ -47,7 +45,7 @@ const ItemForm = () => {
           };
 
           try {
-            await axios.post('http://195.148.30.99/images/', imageData);
+            await axios.post(`${BASE_URL}/images/`, imageData);
             setSuccess('Item and image successfully added!');
           } catch (err) {
             setError('Failed to upload image');

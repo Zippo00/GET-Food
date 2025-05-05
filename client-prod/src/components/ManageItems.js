@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ItemRow from './ItemRow';
-
+import { BASE_URL } from '../services/api'; // Import the BASE_URL/api url from api.js
 const ManageItems = ({ foodItems }) => {
   const [items, setItems] = useState(foodItems); // Local state to manage updates
 
@@ -9,7 +9,7 @@ const ManageItems = ({ foodItems }) => {
     if (!window.confirm('Are you sure you want to delete this item?')) return;
 
     try {
-      const response = await fetch(`http://195.148.30.99/items/${itemId}`, {
+      const response = await fetch(`${BASE_URL}/items/${itemId}`, {
         method: 'DELETE',
       });
 
@@ -29,16 +29,13 @@ const ManageItems = ({ foodItems }) => {
   // Modify item function (with API call)
   const handleModify = async (updatedItem) => {
     try {
-      const response = await fetch(
-        `http://195.148.30.99/items/${updatedItem.id}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(updatedItem),
+      const response = await fetch(`${BASE_URL}/items/${updatedItem.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+        body: JSON.stringify(updatedItem),
+      });
 
       if (!response.ok) {
         throw new Error('Failed to update item');

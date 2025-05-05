@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-
+import { BASE_URL } from '../services/api'; // Import the BASE_URL/api url from api.js
 const OrderTable = ({ orders, setOrders }) => {
   const [itemNames, setItemNames] = useState({});
   const [orderStatuses, setOrderStatuses] = useState({});
+  const [orderItemsMap, setOrderItemsMap] = useState({});
 
   const fetchedStatusSet = new Set(); // Track fetched statuses
 
   // Fetch item names
   const fetchItemName = async (itemId) => {
     try {
-      const response = await fetch(`http://195.148.30.99/items/${itemId}`);
+      const response = await fetch(`http://localhost:5000/items/${itemId}`);
       const data = await response.json();
       if (data && data.name) {
         setItemNames((prev) => ({ ...prev, [itemId]: data.name }));
@@ -19,14 +20,30 @@ const OrderTable = ({ orders, setOrders }) => {
     }
   };
 
+  // Fetch order items from the new API endpoint
+  const fetchOrderItems = async (orderId) => {
+    try {
+      const response = await fetch(`${BASE_URL}/order-items/${orderId}/items`);
+      const data = await response.json();
+      setOrderItemsMap((prev) => ({ ...prev, [orderId]: data }));
+
+      // After fetching order items, fetch item names for each item
+      data.forEach((item) => {
+        if (!itemNames[item.item_id]) {
+          fetchItemName(item.item_id);
+        }
+      });
+    } catch (error) {
+      console.error(`Error fetching items for order ${orderId}:`, error);
+    }
+  };
+
   // Fetch order status one by one
   const fetchOrderStatus = async (orderId) => {
     if (fetchedStatusSet.has(orderId)) return; // Prevent duplicate fetches
     fetchedStatusSet.add(orderId);
     try {
-      const response = await fetch(
-        `http://195.148.30.99/order-status/${orderId}`,
-      );
+      const response = await fetch(`${BASE_URL}/order-status/${orderId}`);
       const data = await response.json();
 
       if (data.length > 0) {
@@ -55,12 +72,12 @@ const OrderTable = ({ orders, setOrders }) => {
 
   useEffect(() => {
     orders.forEach((order) => {
-      order.items.forEach((item) => {
-        if (!itemNames[item.item_id]) {
-          fetchItemName(item.item_id);
-        }
-      });
+      // Fetch items only if not already fetched
+      if (!orderItemsMap[order.id]) {
+        fetchOrderItems(order.id);
+      }
 
+      // Fetch order status if not already fetched
       if (orderStatuses[order.id] === undefined) {
         fetchOrderStatus(order.id);
       }
@@ -129,7 +146,7 @@ const OrderTable = ({ orders, setOrders }) => {
               {/* Item Names Column */}
               <td className="py-3 px-4 text-sm text-gray-700">
                 <ul>
-                  {order.items.map((item) => (
+                  {orderItemsMap[order.id]?.map((item) => (
                     <li key={item.id}>
                       <strong>{itemNames[item.item_id] || 'Loading...'}</strong>
                     </li>
@@ -140,7 +157,7 @@ const OrderTable = ({ orders, setOrders }) => {
               {/* Item IDs Column */}
               <td className="py-3 px-4 text-sm text-gray-700">
                 <ul>
-                  {order.items.map((item) => (
+                  {orderItemsMap[order.id]?.map((item) => (
                     <li key={item.id}>{item.item_id}</li>
                   ))}
                 </ul>
@@ -149,7 +166,7 @@ const OrderTable = ({ orders, setOrders }) => {
               {/* Quantities Column */}
               <td className="py-3 px-4 text-sm text-gray-700">
                 <ul>
-                  {order.items.map((item) => (
+                  {orderItemsMap[order.id]?.map((item) => (
                     <li key={item.id}>Qty: {item.quantity}</li>
                   ))}
                 </ul>
