@@ -20,6 +20,7 @@ __Remember to include all required documentation and HOWTOs, including how to cr
     - [Populating the Database](#populating)
 - [Unit tests](#unit-tests)
     - [Running API unit tests](#api-tests)
+    - [Running Database unit tests](#db-tests)
 
 <br><br><br><br>
 # <p align="center">Deployment in Production Environment</p><a name="deployment"></a>
@@ -149,7 +150,7 @@ The repository contains unit tests for testing the functionalitites of the **API
 
 ## <p align="center">Running API unit tests</p><a name="api-tests"></a>
 
-After the backend (server) has been successfully set up, you can run the unit tests for the API by:
+After the backend (server) has been successfully set up, you can run the unit tests for the API:
 
 1. Navigate to the `server` folder with:
     ```console
@@ -158,5 +159,18 @@ After the backend (server) has been successfully set up, you can run the unit te
 2. Run the unit tests with:
     ```console
     pytest test_api.py
+    ```
+
+## <p align="center">Running Database unit tests</p><a name="db-tests"></a>
+
+After the backend (server) has been successfully set up, you can run the unit tests for the Database:
+
+1. Navigate to the `server` folder with:
+    ```console
+    cd GET-Food/server
+    ```
+2. Run the unit tests with:
+    ```console
+    pytest test_db.py
     ```
 
