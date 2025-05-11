@@ -10,7 +10,7 @@ const OrderTable = ({ orders, setOrders }) => {
   // Fetch item names
   const fetchItemName = async (itemId) => {
     try {
-      const response = await fetch(`http://localhost:5000/items/${itemId}`);
+      const response = await fetch(`${BASE_URL}/items/${itemId}`);
       const data = await response.json();
       if (data && data.name) {
         setItemNames((prev) => ({ ...prev, [itemId]: data.name }));
