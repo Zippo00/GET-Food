@@ -6,7 +6,7 @@ import AddItemPage from './pages/AddItemPage';
 import ManageItemsPage from './pages/ManageItemsPage';
 import OrderStatusPage from './pages/OrderStatusPage';
 import OrderPage from './pages/OrderPage';
-import RoleModal from './components/RoleModal'; // 👈 Add this
+import RoleModal from './components/RoleModal';
 import { RoleContext } from './context/RoleContext';
 import { Routes, Route } from 'react-router-dom';
 
