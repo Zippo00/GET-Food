@@ -1,17 +1,6 @@
 # YOU ARE IN THE PRODUCTION BRANCH. FOR LOCAL USAGE/DEPLOYMENT, SEE `MAIN` BRANCH.
 <br><br><br>
 
-# PWP SPRING 2025
-# Northern Light
-# Group information
-* Mikko Lempinen, mikko.lempinen@oulu.fi
-* Mohamed Al-Ajily, malajily24@student.oulu.fi
-* Lukas Hoffmann, lhoffman24@student.oulu.fi
-* Abu Roman, aroman24@student.oulu.fi
-
-
-__Remember to include all required documentation and HOWTOs, including how to create and populate the database, how to run and test the API, the url to the entrypoint, instructions on how to setup and run the client, instructions on how to setup and run the axiliary service and instructions on how to deploy the api in a production environment__
-
 # <p align="center">Table of Contents</p>
 - [Deployment via Docker](#deployment)
     - [Deploy the API server](#deploy-api)
